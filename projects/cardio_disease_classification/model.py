@@ -51,20 +51,17 @@ def main():
 
     
     #Train and fit the models
-    print("Logistic Regression")
     logistic_regression_clf = logistic_regression_classifier(0, X_train, X_test, y_train, y_test)
 
     #print("\n####################################")
-    #svm_clf = svm_classifier(0, X_train, X_test, y_train, y_test)
+    svm_clf = svm_classifier(0, X_train, X_test, y_train, y_test)
 
-    
     print("\n####################################")
     tree_clf = decision_tree_classifier(0, X_train, X_test, y_train, y_test)
 
     print("\n####################################")
     rf_clf = random_forest_classifier(0, X_train, X_test, y_train, y_test)
     
-    """
     print("\n####################################")
     bagging_clf = bagging_classifier(0, X_train, X_test, y_train, y_test)
   
@@ -79,21 +76,17 @@ def main():
     
     print("\n####################################")
     xgb_clf = xgboosting_classifier(0, X_train, X_test, y_train, y_test)
-    """
-    #models = [logistic_regression_clf, svm_clf, tree_clf, rf_clf, bagging_clf, ada_clf, gb_clf, voting_clf, xgb_clf]
-    #df_result_models = pd.DataFrame(data=models, columns=["Classifier", "Accuracy", "Precision", "Recall", "F1", "AUC"])
-    #print(df_result_models)
+    
+    models = [logistic_regression_clf, svm_clf, tree_clf, rf_clf, bagging_clf, ada_clf, gb_clf, voting_clf, xgb_clf]
+    df_result_models = pd.DataFrame(data=models, columns=["Classifier", "Accuracy", "Precision", "Recall", "F1", "AUC"])
+    print(df_result_models)
 
-    models = [logistic_regression_clf, tree_clf, rf_clf]
+
     df_result_models = pd.DataFrame(data=models, columns=["Classifier", "Accuracy", "Precision", "Recall", "F1", "AUC"])
     df_result_models.sort_values(by=["Accuracy", "Precision", "Recall", "F1", "AUC"], inplace=True, ascending=False)
     print(df_result_models)
 
-    """
-    TO DO:
-      - hiperparameter tunning
-      - separate 10 values from data to teste as real cases
-    """
+    
 
 if __name__ == "__main__":
   main()
