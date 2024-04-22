@@ -16,7 +16,6 @@ from bagging import bagging_classifier
 from ada_boosting import ada_boosting_classifier
 from gradient_boosting import gradient_boosting_classifier
 from logistic_regression import logistic_regression_classifier
-from svm import svm_classifier
 from voting import voting_classifier
 from xgboosting import xgboosting_classifier
 
@@ -49,44 +48,38 @@ def main():
     X = cardio_prepared.copy()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
+    model_type = 1
     
     #Train and fit the models
-    logistic_regression_clf = logistic_regression_classifier(0, X_train, X_test, y_train, y_test)
-
-    #print("\n####################################")
-    svm_clf = svm_classifier(0, X_train, X_test, y_train, y_test)
+    print("\n####################################")
+    logistic_regression_clf = logistic_regression_classifier(model_type, X_train, X_test, y_train, y_test)
 
     print("\n####################################")
-    tree_clf = decision_tree_classifier(0, X_train, X_test, y_train, y_test)
+    tree_clf = decision_tree_classifier(model_type, X_train, X_test, y_train, y_test)
 
     print("\n####################################")
-    rf_clf = random_forest_classifier(0, X_train, X_test, y_train, y_test)
+    rf_clf = random_forest_classifier(model_type, X_train, X_test, y_train, y_test)
     
     print("\n####################################")
-    bagging_clf = bagging_classifier(0, X_train, X_test, y_train, y_test)
+    bagging_clf = bagging_classifier(model_type, X_train, X_test, y_train, y_test)
   
     print("\n####################################")
-    ada_clf = ada_boosting_classifier(0, X_train, X_test, y_train, y_test)
+    ada_clf = ada_boosting_classifier(model_type, X_train, X_test, y_train, y_test)
     
     print("\n####################################")
-    gb_clf = gradient_boosting_classifier(0, X_train, X_test, y_train, y_test)
+    gb_clf = gradient_boosting_classifier(model_type, X_train, X_test, y_train, y_test)
     
     print("\n####################################")
-    voting_clf = voting_classifier(0, X_train, X_test, y_train, y_test)
+    voting_clf = voting_classifier(model_type, X_train, X_test, y_train, y_test, logistic_regression_clf, tree_clf, rf_clf, gb_clf)
     
     print("\n####################################")
-    xgb_clf = xgboosting_classifier(0, X_train, X_test, y_train, y_test)
+    xgb_clf = xgboosting_classifier(model_type, X_train, X_test, y_train, y_test)
     
-    models = [logistic_regression_clf, svm_clf, tree_clf, rf_clf, bagging_clf, ada_clf, gb_clf, voting_clf, xgb_clf]
-    df_result_models = pd.DataFrame(data=models, columns=["Classifier", "Accuracy", "Precision", "Recall", "F1", "AUC"])
-    print(df_result_models)
-
-
+    models = [logistic_regression_clf, tree_clf, rf_clf, bagging_clf, ada_clf, gb_clf, voting_clf, xgb_clf]
     df_result_models = pd.DataFrame(data=models, columns=["Classifier", "Accuracy", "Precision", "Recall", "F1", "AUC"])
     df_result_models.sort_values(by=["Accuracy", "Precision", "Recall", "F1", "AUC"], inplace=True, ascending=False)
     print(df_result_models)
-
     
-
+    
 if __name__ == "__main__":
   main()

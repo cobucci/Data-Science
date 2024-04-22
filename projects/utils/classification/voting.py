@@ -6,18 +6,31 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 
-def voting_classifier(type, X_train, X_test, y_train, y_test):
+def voting_classifier(type, X_train, X_test, y_train, y_test, logistic_regression_clf, tree_clf, random_forest_clf, gradient_boosting_clf):
 
     if type == 0:
-        log_clf = LogisticRegression()
-        rnd_clf = RandomForestClassifier()
-        svm_clf = SVC()
-        tree_clf = DecisionTreeClassifier()
-        gb_clf = GradientBoostingClassifier()
+        vt_lr_clf = LogisticRegression()
 
-        voting_clf = VotingClassifier(estimators=[('lr', log_clf), ('rf', rnd_clf), ('svm', svm_clf), ('tree', tree_clf), ('gb', GradientBoostingClassifier)], voting='hard')
-        voting_clf.fit(X_train, y_train)
-        y_pred = voting_clf.predict(X_test)
+        vt_dt_clf = DecisionTreeClassifier()
+
+        vt_rf_clf = RandomForestClassifier()
+
+        vt_gb_clf = GradientBoostingClassifier()
+
+    if type >= 1:
+        vt_lr_clf = LogisticRegression(solver='newton-cg', 
+                                                penalty='l2', 
+                                                C=1)
+
+        vt_dt_clf = DecisionTreeClassifier(splitter='best', min_samples_split= 28, min_samples_leaf=9, max_leaf_nodes=27, max_depth=29, criterion='gini')
+
+        vt_rf_clf = RandomForestClassifier(n_estimators=601, min_samples_split= 17, min_samples_leaf= 25, max_leaf_nodes= 19, max_features= None, max_depth=11)
+        
+        vt_gb_clf = GradientBoostingClassifier(min_samples_split=27, min_samples_leaf= 19, max_features= None, max_depth= 7, loss= 'exponential', learning_rate= 0.02, criterion='friedman_mse')
+
+    voting_clf = VotingClassifier(estimators=[('lr', vt_lr_clf), ('tree', vt_dt_clf), ('rf', vt_rf_clf), ('gb', vt_gb_clf)], voting='hard', n_jobs=-1)
+    voting_clf.fit(X_train, y_train)
+    y_pred = voting_clf.predict(X_test)
 
     return perfomance_metrics(voting_clf, y_test, y_pred)
 

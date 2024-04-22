@@ -18,14 +18,14 @@ def decision_tree_classifier(type, X_train, X_test, y_train, y_test):
     if type == 0:
         tree_clf = DecisionTreeClassifier()   
     if type == 1:
-        tree_clf = RandomizedSearchCV(DecisionTreeClassifier(), parameters, cv=5, n_iter=100, random_state=42, n_jobs=-1)
+        tree_clf = RandomizedSearchCV(DecisionTreeClassifier(), parameters, cv=3, n_iter=15, random_state=42, n_jobs=-1)
+        tree_clf.__class__.__name__ = "DecisionTreeClassifier"
     if type == 2:
-        tree_clf = GridSearchCV(DecisionTreeClassifier(), parameters, cv=5, n_jobs=-1)
-    
+        tree_clf = GridSearchCV(DecisionTreeClassifier(), parameters, cv=3, n_jobs=-1)
+        tree_clf.__class__.__name__ = "DecisionTreeClassifier"
 
     tree_clf.fit(X_train, y_train)
     y_pred = tree_clf.predict(X_test)
-    print("Best Estimator: ", tree_clf.best_params_)
     
     duration = time.time() - start_time
     print("Computation Time = ", duration)

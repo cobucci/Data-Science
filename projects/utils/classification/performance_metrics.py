@@ -9,7 +9,9 @@ def perfomance_metrics(classifier, y_, y_pred):
     f1 = round(f1_score(y_, y_pred), 5)
     auc = round(roc_auc_score(y_, y_pred), 5)
     
-    print(classifier.__class__.__name__)
+    print("\n",classifier.__class__.__name__)
+    if hasattr(classifier, 'best_params_'):
+        print("Best Model: ", classifier.best_params_)
     print("\nConfusion Matrix:\n", confusion_matrix(y_, y_pred))
     print("\nAccuracy: " , accuracy)
     print("\nPrecision: ", precision)
